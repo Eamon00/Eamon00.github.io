@@ -224,7 +224,8 @@ async function load() {
     const bounds = [];
 
     data.forEach(row => {
-      const team = clean(row["Team Number"]);
+      const teamRaw = clean(row["Team Number"]);
+      const team = teamRaw.match(/^\d+/)?.[0];
       const lat = parseFloat(row["Lat"]);
       const lon = parseFloat(row["Lon"]);
 
