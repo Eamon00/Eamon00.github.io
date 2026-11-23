@@ -22,8 +22,9 @@
   #status { margin-left: auto; font-size: .85rem; }
   #status.error { color: var(--accent); font-weight: 600; }
   #map { flex: 1; min-height: 0; }
-  .pin { width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: #fff; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
-  .pin.done { background: var(--done); }
+  .pin { position: relative; overflow: hidden; width: 40px; height: 40px; border-radius: 50%; background: var(--ink); color: #fff; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+  .pin img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .pin.done { background: var(--done); border-color: var(--done); }
   .popup h3 { margin: 0 0 2px; font-size: 1.05rem; }
   .popup .loc { margin: 0 0 8px; font-style: italic; }
   .popup ul { list-style: none; margin: 0; padding: 0; max-height: 220px; overflow: auto; }
@@ -46,12 +47,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script>
-// ---- Settings: paste your published CSV link here ----
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRo138moOhBgXWB1LgD-LIhooS8r7bPTQLfkTvCW6hM-A1q4gTe-W2mFSSrHkjQHoj9yDOqs8x6723K/pub?gid=1762194329&single=true&output=csv";
 const REFRESH_MS = 5 * 60 * 1000;
 const FINISH = [52.5200, 13.4050]; // Berlin
 const NON_TIME_COLS = ["Team Number", "Location", "Lat", "Lon", "Geocoded for"];
-// ------------------------------------------------------
 
 const map = L.map("map").setView(FINISH, 5);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -99,8 +98,8 @@ async function load() {
 
       const icon = L.divIcon({
         className: "",
-        html: `<div class="pin${arrived ? " done" : ""}">${esc(team)}</div>`,
-        iconSize: [32, 32], iconAnchor: [16, 16], popupAnchor: [0, -16]
+        html: `<div class="pin${arrived ? " done" : ""}"><span>${esc(team)}</span><img src="icons/${encodeURIComponent(team)}.png" alt="" onload="this.previousElementSibling.hidden=true" onerror="this.remove()"></div>`,
+        iconSize: [40, 40], iconAnchor: [20, 20], popupAnchor: [0, -20]
       });
       markers[team] = L.marker([lat, lon], { icon, title: "Team " + team, alt: "Team " + team })
         .bindPopup(popupHtml(team, location, notes), { maxWidth: 320 });
