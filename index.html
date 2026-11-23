@@ -238,7 +238,7 @@ async function load() {
 
       // Load the team's individual PNG from the Icons folder
       const icon = L.icon({
-        iconUrl: new URL(`Icons/${team}.png`, window.location.href).href,
+        iconUrl: `/Icons/${team}.png`,
         iconSize: [ICON_SIZE, ICON_SIZE],
         iconAnchor: [ICON_SIZE / 2, ICON_SIZE / 2],
         popupAnchor: [0, -ICON_SIZE / 2],
