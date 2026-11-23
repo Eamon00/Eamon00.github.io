@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,11 +12,12 @@
 
 <style>
   :root {
-    --ink:#16324f;
-    --paper:#ffffff;
-    --line:#d5dbe3;
-    --done:#1f7a4d;
-    --accent:#d4382c;
+    --ink: #16324f;
+    --paper: #ffffff;
+    --line: #d5dbe3;
+    --done: #1f7a4d;
+    --accent: #d4382c;
+    --light: #f3f6f9;
   }
 
   * { box-sizing: border-box; }
@@ -32,6 +34,7 @@
     flex-direction: column;
   }
 
+  /* Top toolbar */
   header {
     display: flex;
     gap: 12px;
@@ -40,6 +43,7 @@
     padding: 8px 12px;
     background: var(--paper);
     border-bottom: 1px solid var(--line);
+    z-index: 500;
   }
 
   header label { font-weight: 600; }
@@ -82,7 +86,150 @@
     font-weight: 600;
   }
 
-  #map { flex: 1; min-height: 0; }
+  /* Main sidebar and map layout */
+  .main-layout {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width: 285px;
+    flex: 0 0 285px;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    border-right: 1px solid var(--line);
+    min-height: 0;
+    z-index: 400;
+  }
+
+  .sidebar-header {
+    padding: 14px 13px 11px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .sidebar-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .sidebar-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  #team-count {
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--done);
+    background: #e8f4ed;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  #sidebar-search {
+    width: 100%;
+    font-size: .9rem;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+
+  #team-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 6px;
+  }
+
+  /* Individual team entries */
+  .team-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    padding: 9px 8px;
+    margin-bottom: 3px;
+    text-align: left;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .team-row:hover {
+    background: var(--light);
+    color: var(--ink);
+  }
+
+  .team-row:active {
+    background: #e4ebf2;
+  }
+
+  .team-row img {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+
+  .team-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+    gap: 2px;
+  }
+
+  .team-number {
+    font-weight: 700;
+    font-size: .9rem;
+  }
+
+  .team-name {
+    font-size: .8rem;
+    color: #536477;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .team-location {
+    font-size: .74rem;
+    color: #758292;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .team-arrow {
+    color: #9aa6b2;
+    font-size: 1.2rem;
+    flex: 0 0 auto;
+  }
+
+  .empty-message {
+    padding: 20px 12px;
+    text-align: center;
+    color: #758292;
+    font-size: .85rem;
+  }
+
+  /* Map */
+  #map {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+  }
 
   /* Team image markers */
   .team-icon {
@@ -93,6 +240,7 @@
     box-shadow: 0 1px 4px rgba(0,0,0,.45);
   }
 
+  /* Popups */
   .popup h3 {
     margin: 0 0 2px;
     font-size: 1.05rem;
@@ -128,6 +276,63 @@
     font-weight: 400;
     opacity: .75;
   }
+
+  /* Smaller screens */
+  @media (max-width: 650px) {
+    header {
+      gap: 7px;
+      padding: 7px;
+    }
+
+    header label {
+      font-size: .85rem;
+    }
+
+    header input {
+      width: 7em;
+    }
+
+    #status {
+      font-size: .72rem;
+    }
+
+    #sidebar {
+      width: 42%;
+      flex: 0 0 42%;
+    }
+
+    .sidebar-header {
+      padding: 10px 7px;
+    }
+
+    .sidebar-title {
+      font-size: .85rem;
+    }
+
+    .team-row {
+      gap: 6px;
+      padding: 7px 4px;
+    }
+
+    .team-row img {
+      width: 30px;
+      height: 30px;
+      flex-basis: 30px;
+    }
+
+    .team-number {
+      font-size: .8rem;
+    }
+
+    .team-name,
+    .team-location {
+      font-size: .68rem;
+    }
+
+    .team-arrow {
+      display: none;
+    }
+  }
 </style>
 </head>
 
@@ -135,13 +340,40 @@
 
 <header>
   <label for="team">Find a team</label>
-  <input id="team" list="teamlist" inputmode="numeric" placeholder="Team number" autocomplete="off">
+  <input id="team" list="teamlist" inputmode="numeric"
+         placeholder="Team number" autocomplete="off">
   <datalist id="teamlist"></datalist>
   <button id="fit" type="button">Show all teams</button>
   <span id="status" role="status">Loading teams…</span>
 </header>
 
-<div id="map"></div>
+<div class="main-layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title-row">
+        <h2 class="sidebar-title">Race 2 Berlin Teams</h2>
+        <span id="team-count">0 teams</span>
+      </div>
+
+      <input
+        id="sidebar-search"
+        type="search"
+        placeholder="Search teams..."
+        autocomplete="off"
+        aria-label="Search teams">
+    </div>
+
+    <div id="team-list">
+      <div class="empty-message">Loading teams...</div>
+    </div>
+  </aside>
+
+  <!-- MAP -->
+  <div id="map"></div>
+
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
@@ -149,15 +381,16 @@
 
 <script>
 
-// Settings
+// SETTINGS
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRo138moOhBgXWB1LgD-LIhooS8r7bPTQLfkTvCW6hM-A1q4gTe-W2mFSSrHkjQHoj9yDOqs8x6723K/pub?gid=1762194329&single=true&output=csv";
 
 const REFRESH_MS = 5 * 60 * 1000;
-const FINISH = [52.5200, 13.4050]; // Berlin
+const FINISH = [52.5200, 13.4050];
 const NON_TIME_COLS = ["Team Number", "Location", "Lat", "Lon", "Geocoded for"];
 const ICON_SIZE = 40;
-// 
 
+
+// MAP SETUP
 const map = L.map("map").setView(FINISH, 5);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -172,10 +405,20 @@ const cluster = L.markerClusterGroup({
 
 map.addLayer(cluster);
 
-const markers = {};
-let firstLoad = true;
-const statusEl = document.getElementById("status");
 
+// GLOBAL DATA
+const markers = {};
+const teamDetails = {};
+
+let firstLoad = true;
+
+const statusEl = document.getElementById("status");
+const teamListEl = document.getElementById("team-list");
+const teamCountEl = document.getElementById("team-count");
+const sidebarSearchEl = document.getElementById("sidebar-search");
+
+
+// HELPER FUNCTIONS
 const esc = s => String(s).replace(/[&<>"']/g, c => ({
   "&": "&amp;",
   "<": "&lt;",
@@ -189,6 +432,8 @@ const clean = v => {
   return v && v !== "-" ? v : "";
 };
 
+
+// POPUP CONTENT
 function popupHtml(team, location, notes) {
   const items = notes.map((n, i) =>
     `<li class="${i === notes.length - 1 ? "latest" : ""}">
@@ -203,9 +448,119 @@ function popupHtml(team, location, notes) {
   </div>`;
 }
 
+
+// SIDEBAR
+function renderSidebar() {
+
+  const teams = Object.keys(markers)
+    .sort((a, b) => Number(a) - Number(b));
+
+  teamCountEl.textContent = `${teams.length} teams`;
+
+  if (!teams.length) {
+    teamListEl.innerHTML =
+      '<div class="empty-message">No teams currently have recorded locations.</div>';
+    return;
+  }
+
+  teamListEl.innerHTML = teams.map(team => {
+
+    const info = teamDetails[team] || {};
+    const name = info.name || "";
+    const location = info.location || "Location unavailable";
+
+    return `
+      <button
+        class="team-row"
+        type="button"
+        data-team="${esc(team)}"
+        data-search="${esc(`${team} ${name} ${location}`.toLowerCase())}"
+        title="Show Team ${esc(team)} on the map"
+      >
+        <img
+          src="https://eamon00.github.io/Icons/${encodeURIComponent(team)}.png"
+          alt="Team ${esc(team)}"
+          loading="lazy"
+        >
+
+        <span class="team-copy">
+          <span class="team-number">Team ${esc(team)}</span>
+          ${name ? `<span class="team-name">${esc(name)}</span>` : ""}
+          <span class="team-location">${esc(location)}</span>
+        </span>
+
+        <span class="team-arrow">›</span>
+      </button>
+    `;
+  }).join("");
+
+  // Reapply the current sidebar search after refreshing
+  filterSidebar();
+}
+
+
+// SIDEBAR SEARCH
+function filterSidebar() {
+
+  const query = sidebarSearchEl.value.trim().toLowerCase();
+
+  const rows = teamListEl.querySelectorAll(".team-row");
+
+  let visible = 0;
+
+  rows.forEach(row => {
+    const matches = row.dataset.search.includes(query);
+
+    row.style.display = matches ? "flex" : "none";
+
+    if (matches) visible++;
+  });
+
+  // Show a message if there are no search results
+  let empty = teamListEl.querySelector(".empty-message");
+
+  if (!visible && rows.length) {
+    if (!empty) {
+      empty = document.createElement("div");
+      empty.className = "empty-message";
+      teamListEl.appendChild(empty);
+    }
+
+    empty.textContent = "No matching teams found.";
+  } else if (empty && rows.length) {
+    empty.remove();
+  }
+}
+
+sidebarSearchEl.addEventListener("input", filterSidebar);
+
+
+// CLICK SIDEBAR TEAM TO ZOOM TO ITS LOCATION
+teamListEl.addEventListener("click", e => {
+
+  const row = e.target.closest(".team-row");
+
+  if (!row) return;
+
+  const team = row.dataset.team;
+  const marker = markers[team];
+
+  if (marker) {
+    cluster.zoomToShowLayer(marker, () => {
+      map.setView(marker.getLatLng(), Math.max(map.getZoom(), 10));
+      marker.openPopup();
+    });
+  }
+});
+
+
+// LOAD SPREADSHEET DATA
 async function load() {
+
   try {
+
     const res = await fetch(CSV_URL + "&t=" + Date.now());
+
     if (!res.ok) throw new Error(res.status);
 
     const { data, meta } = Papa.parse(await res.text(), {
@@ -214,18 +569,36 @@ async function load() {
       transformHeader: h => h.trim()
     });
 
-    const timeCols = meta.fields.filter(f => !NON_TIME_COLS.includes(f));
+    const timeCols = meta.fields.filter(
+      f => !NON_TIME_COLS.includes(f)
+    );
 
-    const openTeam = Object.keys(markers).find(t => markers[t].isPopupOpen());
+    // Remember which popup was open before refreshing
+    const openTeam = Object.keys(markers)
+      .find(t => markers[t].isPopupOpen());
 
+    // Clear old map data
     cluster.clearLayers();
+
     Object.keys(markers).forEach(k => delete markers[k]);
+    Object.keys(teamDetails).forEach(k => delete teamDetails[k]);
 
     const bounds = [];
 
+    // Process each spreadsheet row
     data.forEach(row => {
+
       const teamRaw = clean(row["Team Number"]);
+
+      // Extract team number from entries such as:
+      // "21: Eamon & Robbie"
       const team = teamRaw.match(/^\d+/)?.[0];
+
+      // Extract team names, if present
+      const teamName = teamRaw
+        .replace(/^\d+\s*:?\s*/, "")
+        .trim();
+
       const lat = parseFloat(row["Lat"]);
       const lon = parseFloat(row["Lon"]);
 
@@ -234,45 +607,75 @@ async function load() {
       const location = clean(row["Location"]);
 
       const notes = timeCols
-        .map(c => ({ when: c, text: clean(row[c]) }))
+        .map(c => ({
+          when: c,
+          text: clean(row[c])
+        }))
         .filter(n => n.text);
 
-      // Load the team's individual PNG from the Icons folder
+      // Create the team's individual PNG icon
       const icon = L.icon({
-        iconUrl: `https://eamon00.github.io/Icons/${team}.png`,
-        iconSize: [40, 40],
-        iconAnchor: [20, 20],
-        popupAnchor: [0, -20]
+        iconUrl: `https://eamon00.github.io/Icons/${encodeURIComponent(team)}.png`,
+        iconSize: [ICON_SIZE, ICON_SIZE],
+        iconAnchor: [ICON_SIZE / 2, ICON_SIZE / 2],
+        popupAnchor: [0, -ICON_SIZE / 2]
       });
 
+      // Create map marker
       markers[team] = L.marker([lat, lon], {
         icon,
         title: "Team " + team,
         alt: "Team " + team
-      }).bindPopup(popupHtml(team, location, notes), {
-        maxWidth: 320
-      });
+      }).bindPopup(
+        popupHtml(team, location, notes),
+        { maxWidth: 320 }
+      );
 
       cluster.addLayer(markers[team]);
+
       bounds.push([lat, lon]);
+
+      // Save information for the sidebar
+      teamDetails[team] = {
+        name: teamName,
+        location: location
+      };
+
     });
 
+
+    // UPDATE THE TOP SEARCH DROPDOWN
     document.getElementById("teamlist").innerHTML =
       Object.keys(markers)
-        .sort((a, b) => a - b)
+        .sort((a, b) => Number(a) - Number(b))
         .map(t => `<option value="${esc(t)}">`)
         .join("");
 
+
+    // UPDATE THE SIDEBAR
+    renderSidebar();
+
+
+    // Fit map on first load only
     if (firstLoad && bounds.length) {
-      map.fitBounds(bounds, { padding: [30, 30] });
+
+      map.fitBounds(bounds, {
+        padding: [30, 30]
+      });
+
       firstLoad = false;
     }
 
+
+    // Restore previously open popup
     if (openTeam && markers[openTeam]) {
       markers[openTeam].openPopup();
     }
 
+
+    // Update status
     statusEl.className = "";
+
     statusEl.textContent =
       `${bounds.length} teams, updated ${new Date().toLocaleTimeString([], {
         hour: "2-digit",
@@ -280,35 +683,57 @@ async function load() {
       })}`;
 
   } catch (e) {
+
     console.error("Map update error:", e);
+
     statusEl.className = "error";
-    statusEl.textContent = "Couldn't load team data. Retrying in 5 minutes.";
+
+    statusEl.textContent =
+      "Couldn't load team data. Retrying in 5 minutes.";
+
   }
+
 }
 
-// Team search
+
+// TOP TEAM SEARCH
 document.getElementById("team").addEventListener("change", e => {
+
   const m = markers[e.target.value.trim()];
 
   if (m) {
+
     cluster.zoomToShowLayer(m, () => {
-      map.setView(m.getLatLng(), Math.max(map.getZoom(), 10));
+
+      map.setView(
+        m.getLatLng(),
+        Math.max(map.getZoom(), 10)
+      );
+
       m.openPopup();
+
     });
+
   }
+
 });
 
-// Show all teams
+
+// SHOW ALL TEAMS
 document.getElementById("fit").addEventListener("click", () => {
+
   const b = Object.values(markers).map(m => m.getLatLng());
 
   if (b.length) {
     map.fitBounds(b, { padding: [30, 30] });
   }
+
 });
 
-// Initial load and automatic refresh
+
+// INITIAL LOAD AND AUTOMATIC REFRESH
 load();
+
 setInterval(load, REFRESH_MS);
 
 </script>
